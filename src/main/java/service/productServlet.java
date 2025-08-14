@@ -3,15 +3,26 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import java.io.IOException;
+import java.io.PrintWriter;
+
 import DAO.productDAO;
+import com.google.gson.Gson;
 
 @WebServlet("/products")
 public class productServlet extends HttpServlet{
     private productDAO productDAO = new productDAO();
+    private Gson gson=new Gson();
+
     @Override
     protected void doGet(HttpServletRequest req,HttpServletResponse res) throws ServletException,IOException{
-        req.setAttribute("products",productDAO.listAll());
-        req.getRequestDispatcher("/WEB-INF/products.jsp").forward(req,res);
+//        req.setAttribute("products",productDAO.listAll());
+//        req.getRequestDispatcher("/WEB-INF/products.jsp").forward(req,res);
+        res.setContentType("application/json");
+        res.setCharacterEncoding("UTF-8");
+        String json=gson.toJson(productDAO.listAll());
+        PrintWriter out=res.getWriter();
+        out.print(json);
+        out.flush();
     }
     @Override
     protected void doPost(HttpServletRequest req,HttpServletResponse res) throws ServletException,IOException{
