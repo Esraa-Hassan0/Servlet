@@ -39,8 +39,6 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: maven-build
-        path: target/*.jar   # uploads all JAR files from target/
+        path: target/**/*.jar
         if-no-files-found: error
-        retention-days: 7    # keep artifact for 7 days
-        compression-level: 6
-        overwrite: true
+
